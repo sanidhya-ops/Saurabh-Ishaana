@@ -1,26 +1,30 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ================= MUSIC ================= */
   const music = document.getElementById("bg-music");
-  let musicPlayed = false;
+  let musicStarted = false;
 
-  const playMusic = () => {
-    if (music && !musicPlayed) {
-      music.play().catch(() => {
-        // Autoplay blocked
-        console.log("Autoplay blocked, waiting for user interaction...");
+  const startMusic = () => {
+    if (!music || musicStarted) return;
+
+    music.volume = 0.7;  
+    music.loop = true;
+
+    music.play()
+      .then(() => {
+        musicStarted = true;
+        console.log("Music playing 🎵");
+      })
+      .catch(() => {
+        console.log("Waiting for user interaction...");
       });
-      musicPlayed = true;
-    }
   };
 
-  // Try to play immediately
-  playMusic();
-
-  // Fallback: play on first user interaction
-  ["click", "scroll", "touchstart"].forEach(evt => {
-    window.addEventListener(evt, playMusic, { once: true });
+  ["click", "scroll", "touchstart"].forEach(event => {
+    window.addEventListener(event, startMusic, { once: true });
   });
+
+
 
   /* ================= FADE-IN SECTIONS ================= */
   const fadeSections = document.querySelectorAll(".fade-section");
