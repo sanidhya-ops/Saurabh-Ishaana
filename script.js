@@ -1,17 +1,24 @@
 const music = document.getElementById("bg-music");
-const btn = document.getElementById("musicBtn");
+let musicPlayed = false; // ensure it plays only once
 
-btn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-    btn.innerHTML = "🔈 Pause Music";
-  } else {
-    music.pause();
-    btn.innerHTML = "🔊 Play Music";
+// Play music when user scrolls
+window.addEventListener("scroll", () => {
+  if (!musicPlayed) {
+    music.play().catch(() => {}); // catch autoplay errors silently
+    musicPlayed = true;
   }
 });
-const sections = document.querySelectorAll("section");
 
+// Or play music when user clicks anywhere
+window.addEventListener("click", () => {
+  if (!musicPlayed) {
+    music.play().catch(() => {});
+    musicPlayed = true;
+  }
+});
+
+// Optional: section scroll animations
+const sections = document.querySelectorAll("section");
 window.addEventListener("scroll", () => {
   sections.forEach(sec => {
     const top = sec.getBoundingClientRect().top;
@@ -21,3 +28,4 @@ window.addEventListener("scroll", () => {
     }
   });
 });
+
